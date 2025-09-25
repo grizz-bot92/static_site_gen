@@ -1,4 +1,7 @@
 from enum import Enum
+from htmlnode import HTMLNode, ParentNode
+from inline_markdown import text_to_textnodes
+from textnode import text_node_to_html_node, TextNode, TextType
 
 class BlockType(Enum):
     PARAGRAPH = "paragraph"
@@ -47,16 +50,41 @@ def block_to_block_type(markdown):
 
 
 
-md = """
-This is **bolded** paragraph
+def markdown_to_html(markdown):
+    pass
 
-This is another paragraph with _italic_ text and `code` here
-This is the same paragraph on a new line
+string = 'this is **bold** text with *italic* text and a [link](www.hello.com)'
 
-- This is a list
-- with items
-"""
+def text_to_children(text):
+    html_nodes = []
+    nodes = text_to_textnodes(text)
 
-print(block_to_block_type(md))
+    for node in nodes:
+        result = text_node_to_html_node(node)
+        html_nodes.append(result)
+    return html_nodes
 
 
+para = "Line one, still same paragraph"
+
+def markdown_to_paragraph(markdown):
+    lines = markdown.split("\n")
+    joined = " ".join(lines)
+    child = text_to_children(joined)
+    return ParentNode("p", child)
+
+def markdown_to_heading(markdown):
+    valid = markdown.startswith(("# ", "## ", "### ", "#### ", "##### ", "###### "))
+
+
+def markdown_to_code(markdown):
+    pass
+
+def markdown_to_quote(markdown):
+    pass
+
+def markdown_to_ul(markdown):
+    pass
+
+def markdown_to_ol(markdown):
+    pass
