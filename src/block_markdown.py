@@ -53,7 +53,6 @@ def block_to_block_type(markdown):
 def markdown_to_html(markdown):
     pass
 
-string = 'this is **bold** text with *italic* text and a [link](www.hello.com)'
 
 def text_to_children(text):
     html_nodes = []
@@ -65,7 +64,7 @@ def text_to_children(text):
     return html_nodes
 
 
-para = "Line one, still same paragraph"
+para = "### Line one, still same paragraph"
 
 def markdown_to_paragraph(markdown):
     lines = markdown.split("\n")
@@ -74,7 +73,23 @@ def markdown_to_paragraph(markdown):
     return ParentNode("p", child)
 
 def markdown_to_heading(markdown):
-    valid = markdown.startswith(("# ", "## ", "### ", "#### ", "##### ", "###### "))
+    level = 0
+
+    for ch in markdown:
+        if ch == "#":
+            level+=1
+        else:
+            break
+    if level == 0 or level > 6:
+        return("Invalid range")
+    if len(markdown) <= level or markdown[level] != " ":
+        return("Invalid markdown")
+    text = markdown[level + 1: ]
+
+    children = text_to_children(text)
+    return ParentNode(f'h{level}', children)
+
+print(markdown_to_heading(para))
 
 
 def markdown_to_code(markdown):
